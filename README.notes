@@ -4,6 +4,3 @@ access app on https://boxer-api.onrender.com/
 
 https://boxer-api.onrender.com/boxers to display list of boxers 
 https://boxer-api.onrender.com/fullname to display boxer
-
-POST with https://boxer-api.onrender.com/boxers
-PATCH and DELETE with https://boxer-api.onrender.com/boxer/id 
