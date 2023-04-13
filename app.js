@@ -19,13 +19,13 @@ app.get('/boxers', (req, res) => {
     res.send(boxers)
 })
 
-app.get('/boxers/:name', (req, res) => {
-    const name = req.params.name.toLowerCase()
-    const boxer = boxers.find(boxer => boxer.name.toLowerCase() === name)
-    if (boxer === undefined) {
-      res.status(404).send({ error: `Boxer: ${name} not found :(`})
-    }
-    res.send(boxer)
+app.get('/boxers/:id', (req, res) => {
+  const id = req.params.id
+  const boxer = boxers.find(boxer => boxer.id == id)
+  if (boxer === undefined) {
+    res.status(404).send({ error: `Boxer: ${id} not found :(`})
+  }
+  res.send(boxer)
 })
 
 app.post('/boxers', (req, res) => {
@@ -48,32 +48,34 @@ app.post('/boxers', (req, res) => {
     }
 })
 
-app.patch("/boxers/:name", (req, res) => {
-    const boxer = boxers.find(boxer => boxer.name.toLowerCase() === req.params.name.toLowerCase());
-  
-    if (boxer === undefined) {
-      return res.status(404).send({error: "boxer does not exist"})
-    }
-  
-    try {
-      const updatedBoxer = { ...req.body, name: capitalise(req.body.name), id: boxer.id}
-  
 
-      const idx = boxers.findIndex(f => f.id === boxer.id);
-      console.log(idx)
-      boxers[idx] = updatedBoxer;
-      console.log(boxers[idx])
-      res.send(updatedBoxer)
-    } catch (error) {
-      res.status(400).send(error.message)
-    }
+app.patch("/boxers/:id", (req, res) => {
+  const boxer = boxers.find(boxer => boxer.id == req.params.id);
+
+  if (boxer === undefined) {
+    return res.status(404).send({error: "boxer does not exist"})
+  }
+
+  try {
+    const updatedBoxer = { ...req.body, id: req.body.id, id: boxer.id}
+
+
+    const idx = boxers.findIndex(f => f.id === boxer.id);
+    console.log(idx)
+    boxers[idx] = updatedBoxer;
+    console.log(boxers[idx])
+    res.send(updatedBoxer)
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
 })
 
-app.delete("/boxers/:name", (req, res) => {
 
-    const name = req.params.name.toLowerCase();
+app.delete("/boxers/:id", (req, res) => {
+
+    const id = req.params.id;
   
-    const boxerIndex = boxers.findIndex(boxer => boxer.name.toLowerCase() === name);
+    const boxerIndex = boxers.findIndex(boxer => boxer.id == id);
   
     if (boxerIndex === -1) {
       res.status(404).send({ error: "boxer does not exist" })
