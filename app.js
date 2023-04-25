@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(logger)
 
 app.get('/', (req, res) => {
-    res.send("Welcome to the Boxer API")
+    res.send("Welcome to the Boxer API ")
   })
   
 app.get('/boxers', (req, res) => {
