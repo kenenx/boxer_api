@@ -1,4 +1,4 @@
-[
+const boxers = [
     {
       "name": "Mike Tyson",
       "weight": "Heavyweight",
@@ -40,4 +40,5 @@
       "wins": 62 
     }
   ]
-  
+
+module.exports = boxers

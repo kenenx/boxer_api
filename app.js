@@ -1,90 +1,87 @@
 const express = require('express')
+const logger = require('morgan')
 const cors = require('cors')
-
-const logger = require("./logger");
-const boxers = require('./boxers.json')
 const { capitalise } = require('./helpers')
+
+const boxersRoutes = require('./routes/boxers')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(logger)
+app.use(logger('dev'))
 
 app.get('/', (req, res) => {
-    res.send("Welcome to the Boxer API")
+    res.send("Welcome to the Boxer API ")
   })
   
-app.get('/boxers', (req, res) => {
-    res.send(boxers)
-})
+app.use('/boxers', boxersRoutes)
 
-app.get('/boxers/:id', (req, res) => {
-  const id = req.params.id
-  const boxer = boxers.find(boxer => boxer.id == id)
-  if (boxer === undefined) {
-    res.status(404).send({ error: `Boxer: ${id} not found :(`})
-  }
-  res.send(boxer)
-})
+module.exports = app
 
-app.post('/boxers', (req, res) => {
+// app.get('/boxers/:id', (req, res) => {
+//   const id = req.params.id
+//   const boxer = boxers.find(boxer => boxer.id == id)
+//   if (boxer === undefined) {
+//     res.status(404).send({ error: `Boxer: ${id} not found :(`})
+//   }
+//   res.send(boxer)
+// })
 
-    const ids = boxers.map(boxer => boxer.id)
-    let maxId = Math.max(...ids)
+// app.post('/boxers', (req, res) => {
 
-    const boxer = boxers.find(boxer => boxer.name === req.body.name)
+//     const ids = boxers.map(boxer => boxer.id)
+//     let maxId = Math.max(...ids)
 
-    if (boxer !== undefined) {
-      res.status(409).send({error: "Boxer already exists"})
-    } else {
-      maxId += 1
-      const newBoxer = req.body
-      newBoxer.id = maxId
+//     const boxer = boxers.find(boxer => boxer.name === req.body.name)
+
+//     if (boxer !== undefined) {
+//       res.status(409).send({error: "Boxer already exists"})
+//     } else {
+//       maxId += 1
+//       const newBoxer = req.body
+//       newBoxer.id = maxId
   
-      boxers.push(newBoxer)
+//       boxers.push(newBoxer)
   
-      res.status(201).send(newBoxer)
-    }
-})
+//       res.status(201).send(newBoxer)
+//     }
+// })
 
 
-app.patch("/boxers/:id", (req, res) => {
-  const boxer = boxers.find(boxer => boxer.id == req.params.id);
+// app.patch("/boxers/:id", (req, res) => {
+//   const boxer = boxers.find(boxer => boxer.id == req.params.id);
 
-  if (boxer === undefined) {
-    return res.status(404).send({error: "boxer does not exist"})
-  }
+//   if (boxer === undefined) {
+//     return res.status(404).send({error: "boxer does not exist"})
+//   }
 
-  try {
-    const updatedBoxer = { ...req.body, id: req.body.id, id: boxer.id}
-
-
-    const idx = boxers.findIndex(f => f.id === boxer.id);
-    console.log(idx)
-    boxers[idx] = updatedBoxer;
-    console.log(boxers[idx])
-    res.send(updatedBoxer)
-  } catch (error) {
-    res.status(400).send(error.message)
-  }
-})
+//   try {
+//     const updatedBoxer = { ...req.body, id: req.body.id, id: boxer.id}
 
 
-app.delete("/boxers/:id", (req, res) => {
+//     const idx = boxers.findIndex(f => f.id === boxer.id);
+//     console.log(idx)
+//     boxers[idx] = updatedBoxer;
+//     console.log(boxers[idx])
+//     res.send(updatedBoxer)
+//   } catch (error) {
+//     res.status(400).send(error.message)
+//   }
+// })
 
-    const id = req.params.id;
+
+// app.delete("/boxers/:id", (req, res) => {
+
+//     const id = req.params.id;
   
-    const boxerIndex = boxers.findIndex(boxer => boxer.id == id);
+//     const boxerIndex = boxers.findIndex(boxer => boxer.id == id);
   
-    if (boxerIndex === -1) {
-      res.status(404).send({ error: "boxer does not exist" })
-    } else {
-      boxers.splice(boxerIndex, 1);
+//     if (boxerIndex === -1) {
+//       res.status(404).send({ error: "boxer does not exist" })
+//     } else {
+//       boxers.splice(boxerIndex, 1);
   
-      res.status(204).send()
-    }
-})
-
-
-module.exports = app;
+//       res.status(204).send()
+//     }
+// })
