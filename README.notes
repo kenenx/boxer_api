@@ -1,6 +1,6 @@
 boxer_api
 
-access app on https://boxer-api.onrender.com/
+access on https://boxer-api.onrender.com/
 
 https://boxer-api.onrender.com/boxers to display list of boxers and ids 
 https://boxer-api.onrender.com/boxers/id to display boxer
